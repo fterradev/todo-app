@@ -3,6 +3,7 @@ import { auth } from '../firebase';
 import firebase from 'firebase/compat/app';
 
 interface AuthContextType {
+  ready: boolean;
   currentUser: firebase.User | null;
   signup: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
   login: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
@@ -14,10 +15,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<firebase.User | null>(null);
+  const [ready, setReady] = useState(false);
+  const [currentUser, setCurrentUser] = useState<firebase.User | null>(auth.currentUser);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setReady(true);
       setCurrentUser(user);
     });
     return unsubscribe;
@@ -27,6 +30,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const login = (email: string, password: string) => auth.signInWithEmailAndPassword(email, password);
   const logout = () => auth.signOut();
 
-  const value = { currentUser, signup, login, logout };
+  const value = { ready, currentUser, signup, login, logout };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

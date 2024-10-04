@@ -9,12 +9,16 @@ import TodoList from './pages/TodoList';
 const PrivateRoute: React.FC<{ component: React.FC }> = ({ component: Component, ...rest }) => {
   const auth = useAuth();
   return (
-    auth?.currentUser ? (
-      <TodoProvider>
-        <Component />
-      </TodoProvider>
+    !auth?.ready ? (
+      <>Loading...</>
     ) : (
-      <Navigate to="/login" />
+      auth?.currentUser ? (
+        <TodoProvider>
+          <Component />
+        </TodoProvider>
+      ) : (
+        <Navigate to="/login" />
+      )
     )
   );
 };
