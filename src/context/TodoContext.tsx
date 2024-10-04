@@ -1,6 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { firestore } from '../firebase';
 import { useAuth } from './AuthContext';
+import firebase from 'firebase/compat/app';
 
 interface Todo {
   id: string;
@@ -26,6 +27,7 @@ export const TodoProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const unsubscribe = firestore
       .collection('todos')
       .where('userId', '==', auth?.currentUser?.uid)
+      .orderBy('createdAt')
       .onSnapshot((snapshot) => {
         const todosData = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -37,7 +39,12 @@ export const TodoProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [auth?.currentUser]);
 
   const addTodo = async (text: string) => {
-    const newTodo = { text, completed: false };
+    const newTodo = { 
+      text,
+      completed: false,
+      userId: auth?.currentUser?.uid,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
     const docRef = await firestore.collection('todos').add(newTodo);
     setTodos([...todos, { id: docRef.id, ...newTodo }]);
   };
