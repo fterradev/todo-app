@@ -6,13 +6,16 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import TodoList from './pages/TodoList';
 
-const PrivateRoute: React.FC<{ component: React.FC, path: string }> = ({ component: Component, ...rest }) => {
+const PrivateRoute: React.FC<{ component: React.FC }> = ({ component: Component, ...rest }) => {
   const auth = useAuth();
   return (
-    <Route
-      {...rest}
-      element={(auth?.currentUser ? <Component /> : <Navigate  to="/login" />)}
-    />
+    auth?.currentUser ? (
+      <TodoProvider>
+        <Component />
+      </TodoProvider>
+    ) : (
+      <Navigate to="/login" />
+    )
   );
 };
 
@@ -23,9 +26,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <TodoProvider>
-            <PrivateRoute path="/dashboard" component={TodoList} />
-          </TodoProvider>
+          <Route path="/dashboard" element={<PrivateRoute component={TodoList} />} />
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </AuthProvider>
