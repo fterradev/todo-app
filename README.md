@@ -6,10 +6,12 @@ Run `npm install`.
 
 ## Start the application
 
-### 1. Firebase storage and authentication
+Run `npm run firebase:start` in one terminal to start the Firebase storage and authentication emulators.
 
-Run `npm run firebase:start`.
+Note: this will automatically download the emulators if they are not found.
 
-### 2. The web application
+Run `npm start` in another terminal to start the application.
 
-Run `npm start`.
+The application at http://localhost:3000 should automatically open on your browser. To prevent this, add BROWSER=none in your .env file.
+
+If needed, access the Firebase Emulator UI at http://localhost:4000.
