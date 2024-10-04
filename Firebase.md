@@ -1,5 +1,7 @@
 # Firebase setup
 
+This is only needed for a real, deployed Firebase project.
+
 ## Use the following commands
 
 1. `npx firebase login`
@@ -10,7 +12,7 @@
 
     1. Emulators: Set up local emulators for Firebase products
     2. Use an existing project
-    3. todo-app-fcacd (todo-app)
+    3. <your project ID>
     4. Authentication Emulator, Firestore Emulator
     5. ? Which port do you want to use for the auth emulator? (9099)
     6. ? Which port do you want to use for the firestore emulator? (8080)
