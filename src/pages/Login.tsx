@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Container, Typography, Alert } from '@mui/material';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -21,15 +22,33 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Log In</h2>
-      {error && <p>{error}</p>}
+    <Container>
+      <Typography variant="h4">Log In</Typography>
+      {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit}>
-        <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-        <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-        <button type="submit">Log In</button>
+        <TextField
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          fullWidth
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Log In
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 };
 

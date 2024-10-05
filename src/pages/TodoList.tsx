@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTodos } from '../context/TodoContext';
+import { Button, Checkbox, FormControlLabel, List, ListItem, TextField, Typography } from '@mui/material';
 
 const TodoList: React.FC = () => {
   const todos = useTodos();
@@ -15,29 +16,34 @@ const TodoList: React.FC = () => {
 
   return (
     <div>
-      <h2>Your To-Do List</h2>
+      <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+        Your To-Do List
+      </Typography>
       <form onSubmit={handleAddTodo}>
-        <input
+        <TextField
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="New Todo"
+          label="New Todo"
+          size='small'
         />
-        <button type="submit">Add Todo</button>
+        <Button type="submit" variant="contained">Add Todo</Button>
       </form>
-      <ul>
+      <List>
         {todos?.todos.map((todo) =>
-        <li key={todo.id}>
-            <label style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-            <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => todos.toggleTodo(todo.id)}
+        <ListItem key={todo.id}>
+            <FormControlLabel
+              label={todo.text}
+              style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+              control={
+                <Checkbox
+                  checked={todo.completed}
+                  onChange={() => todos.toggleTodo(todo.id)}
+                />
+              }
             />
-            {todo.text}
-            </label>
-        </li>
+        </ListItem>
         )}
-      </ul>
+      </List>
     </div>
   );
 };
